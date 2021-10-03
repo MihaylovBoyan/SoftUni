@@ -43,4 +43,10 @@ public class BaseEntity {
         return this;
     }
 
+    @PrePersist
+    public void beforeCreation() {
+        this.created = Instant.now();
+    }
+
+
 }
