@@ -6,6 +6,7 @@ import bg.softuni.mobilelele.model.entity.ModelEntity;
 import bg.softuni.mobilelele.model.entity.UserEntity;
 import bg.softuni.mobilelele.repository.BrandRepository;
 import bg.softuni.mobilelele.repository.UserRepository;
+import bg.softuni.mobilelele.service.OfferService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,13 @@ public class DBInit implements CommandLineRunner {
     private final BrandRepository brandRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OfferService offerService;
 
-    public DBInit(BrandRepository brandRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DBInit(BrandRepository brandRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, OfferService offerService) {
         this.brandRepository = brandRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.offerService = offerService;
     }
 
 
@@ -30,7 +33,7 @@ public class DBInit implements CommandLineRunner {
     public void run(String... args) {
         initializeBrandAndModels();
         initializeUsers();
-
+        offerService.initializeOffers();
     }
 
     private void initializeUsers() {

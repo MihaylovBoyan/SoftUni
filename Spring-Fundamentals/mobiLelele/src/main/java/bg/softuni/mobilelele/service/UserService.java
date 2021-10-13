@@ -6,4 +6,9 @@ public interface UserService {
 
     boolean login(UserLoginServiceModel loginServiceModel);
 
+    void logout();
+
+    void initializeUsersAndRoles();
+
+
 }
