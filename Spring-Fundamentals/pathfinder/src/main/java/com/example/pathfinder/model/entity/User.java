@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     @Column
     private Integer age;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
 
