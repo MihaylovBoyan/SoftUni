@@ -10,6 +10,10 @@ public class UserViewModel {
     private Integer age;
     private LevelEnum level;
 
+    public UserViewModel(){
+
+    }
+
     public Long getId() {
         return id;
     }

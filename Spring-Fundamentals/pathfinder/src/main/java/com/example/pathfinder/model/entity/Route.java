@@ -4,6 +4,7 @@ import com.example.pathfinder.model.entity.enums.LevelEnum;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "routes")
@@ -27,7 +28,10 @@ public class Route extends BaseEntity {
     @Column
     private String videoUrl;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    private Set<Picture> pictures;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories;
 
     public Route() {
@@ -94,6 +98,15 @@ public class Route extends BaseEntity {
 
     public Route setCategories(Set<Category> categories) {
         this.categories = categories;
+        return this;
+    }
+
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
+
+    public Route setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
         return this;
     }
 }

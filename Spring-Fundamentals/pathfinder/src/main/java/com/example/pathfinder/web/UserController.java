@@ -50,9 +50,14 @@ public class UserController {
             return "redirect:register";
         }
 
-        userService.registerUser(modelMapper
-                .map(userRegisterBindingModel, UserServiceModel.class));
+        boolean isNameExists = userService.isNameExists(userRegisterBindingModel.getUsername());
 
+        if (isNameExists) {
+            //TODO
+        } else {
+            userService.registerUser(modelMapper
+                    .map(userRegisterBindingModel, UserServiceModel.class));
+        }
         return "redirect:login";
     }
 
@@ -90,7 +95,7 @@ public class UserController {
                     .addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
 
             return "redirect:login";
-         }
+        }
 
         userService.loginUser(user.getId(), user.getUsername());
 
@@ -99,17 +104,17 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
         userService.logout();
         return "redirect:/";
 
     }
 
     @GetMapping("/profile/{id}")
-    public String profile(@PathVariable Long id, Model model){
+    public String profile(@PathVariable Long id, Model model) {
 
         model
-                .addAttribute("user",modelMapper.map(userService.findById(id), UserViewModel.class));
+                .addAttribute("user", modelMapper.map(userService.findById(id), UserViewModel.class));
 
         return "profile";
     }

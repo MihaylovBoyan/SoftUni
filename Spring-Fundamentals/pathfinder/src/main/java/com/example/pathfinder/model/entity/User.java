@@ -79,7 +79,6 @@ public class User extends BaseEntity {
         this.roles = roles;
         return this;
     }
-
     public LevelEnum getLevel() {
         return level;
     }
