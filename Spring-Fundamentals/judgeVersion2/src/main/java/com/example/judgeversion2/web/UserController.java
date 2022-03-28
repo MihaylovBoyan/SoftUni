@@ -29,6 +29,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+
+        userService.logout();
+
+        return "redirect:/";
+    }
+
     @GetMapping("/login")
     public String Login(Model model){
 
@@ -61,7 +69,9 @@ public class UserController {
            return "redirect:login";
        }
 
-       httpSession.setAttribute("user", user);
+      // httpSession.setAttribute("user", user);
+
+        userService.login(user);
 
         return "redirect:/";
     }
