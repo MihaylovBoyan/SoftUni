@@ -1,17 +1,23 @@
 package com.example.judgeversion2.service.impl;
 
+import com.example.judgeversion2.model.entity.Homework;
 import com.example.judgeversion2.model.entity.User;
 import com.example.judgeversion2.model.entity.enums.RoleNameEnum;
 import com.example.judgeversion2.model.service.UserServiceModel;
+import com.example.judgeversion2.model.view.UserProfileViewModel;
 import com.example.judgeversion2.repository.UserRepository;
 import com.example.judgeversion2.security.CurrentUser;
+import com.example.judgeversion2.service.ExerciseService;
+import com.example.judgeversion2.service.HomeworkService;
 import com.example.judgeversion2.service.RoleService;
 import com.example.judgeversion2.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final RoleService roleService;
     private final CurrentUser currentUser;
+
 
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, RoleService roleService, CurrentUser currentUser) {
         this.userRepository = userRepository;
@@ -67,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByUsername(username).orElse(null);
 
-        if(user.getRole().getName() != roleNameEnum){
+        if (user.getRole().getName() != roleNameEnum) {
             user.setRole(roleService.findRole(roleNameEnum));
         }
 
@@ -79,4 +86,33 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByUsername(username).orElseThrow();
     }
+
+    @Override
+    public UserProfileViewModel findProfileById(Long id) {
+
+        User user = userRepository.findById(id).orElse(null);
+        UserProfileViewModel userProfileViewModel = modelMapper.map(user, UserProfileViewModel.class);
+        userProfileViewModel.setHomeworkSet(user.getHomeworkSet().stream().map(homework -> homework.getExercise().getName()).collect(Collectors.toSet()));
+
+        return userProfileViewModel;
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<String> findBestStudents() {
+
+      //
+        return null;
+    }
+
+    @Override
+    public Long userCount() {
+        return userRepository.count();
+    }
+
+
 }

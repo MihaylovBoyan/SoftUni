@@ -1,9 +1,7 @@
 package com.example.judgeversion2.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -14,6 +12,8 @@ public class User extends BaseEntity{
     private String email;
     private String git;
     private Role role;
+    private Set<Homework> homeworkSet;
+    private Set<Comment> comments;
 
     public User(){
 
@@ -66,6 +66,26 @@ public class User extends BaseEntity{
 
     public User setRole(Role role) {
         this.role = role;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    public Set<Homework> getHomeworkSet() {
+        return homeworkSet;
+    }
+
+    public User setHomeworkSet(Set<Homework> homeworkSet) {
+        this.homeworkSet = homeworkSet;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "author")
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public User setComments(Set<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 }
