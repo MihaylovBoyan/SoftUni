@@ -6,6 +6,7 @@ import com.example.andreys.model.service.UserServiceModel;
 import com.example.andreys.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,10 +30,11 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(RedirectAttributes redirectAttributes) {
+    public String login(Model model) {
 
-        if(!redirectAttributes.containsAttribute("notFound")){
-            redirectAttributes.addFlashAttribute("notFound", false);
+        if (!model.containsAttribute("userLoginBindingModel") || !model.containsAttribute("notFound")) {
+            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+            model.addAttribute("notFound", false);
         }
 
         return "login";
@@ -43,12 +45,18 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
 
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+
+
             return "redirect:login";
         }
 
         UserServiceModel user = userService.findByUsername(userLoginBindingModel.getUsername());
 
-        if(user == null || !user.getPassword().equals(userLoginBindingModel.getPassword())){
+        if (user == null || !user.getPassword().equals(userLoginBindingModel.getPassword())) {
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+
             redirectAttributes.addFlashAttribute("notFound", true);
             return "redirect:login";
         }
@@ -59,10 +67,10 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register(RedirectAttributes redirectAttributes) {
+    public String register(Model model) {
 
-        if (!redirectAttributes.containsAttribute("userRegisterBindingModel")) {
-            redirectAttributes.addFlashAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+        if (!model.containsAttribute("userRegisterBindingModel")) {
+            model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
         }
 
         return "/register";
@@ -74,13 +82,21 @@ public class UserController {
 
         if (bindingResult.hasErrors() || !userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            //  redirectAttributes.addFlashAttribute("userRegisterBindingModel", org.hibernate.userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
             return "redirect:register";
         }
 
         userService.register(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+
+        httpSession.invalidate();
+
+        return "redirect:/";
     }
 
 }

@@ -1,12 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Andrey's</title>
-        <link rel="stylesheet" href="/css/reset-css.css"/>
-        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/css/style.css"/>
+<head th:include="~{fragments/head}">
+
 </head>
 <body>
         <header >
@@ -19,10 +14,10 @@
 			<div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
 				<ul class="navbar-nav row">
 					<li class="col-md-4">
-						<a class="nav-link text-white active h6" href="/">Add Item</a>
+						<a class="nav-link text-white active h6" th:href="@{/items/add}">Add Item</a>
 					</li>
 					<li class="col-md-4">
-						<a class="nav-link text-white active h6" href="/">Logout</a>
+						<a class="nav-link text-white active h6" th:href="@{/users/log}">Logout</a>
 					</li>
 				</ul>
 			</div>
@@ -33,24 +28,19 @@
     <hr class="my-3"/>
     <div class="container-fluid bg-dark w-25 m-auto ">
         <div class="row justify-content-center ">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="/static/img/MALE-SHORTS.jpg" alt="Card image cap">
+            <div th:object="${item}" class="card" style="width: 18rem;">
+                <img class="card-img-top" th:src="*{imageUrl}" alt="Card image cap">
                 <div class="card-body bg-gray align-content-center text-center">
-                    <h6>Item name</h6>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi enim, excepturi ha </p>
-                    <h6>Price</h6>
-                    <a class="btn btn-danger" >Delete</a>
+                    <h6 th:text="*{name}">Item name</h6>
+                    <p class="card-text" th:text="*{description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi enim, excepturi ha </p>
+                    <h6 th:text="*{price}">Price</h6>
+                    <a th:href="@{/items/delete/{id}(id = *{id})}" class="btn btn-danger" >Delete</a>
                 </div>
             </div>
         </div>
     </div>
 </main>
-    <footer class="footer bg-dark  py-2">
-		<div class="container-fluid text-center">
-			<div class="footer-background h5 text-white">
-				Andrey's & Spring Team 2020.
-			</div>
-		</div>
+    <footer th:include="~{fragments/footer}">
 	</footer>
 </body>
 </html>

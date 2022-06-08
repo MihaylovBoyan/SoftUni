@@ -2,12 +2,11 @@ package com.example.andreys.service.impl;
 
 import com.example.andreys.model.entity.Category;
 import com.example.andreys.model.entity.enums.CategoryNameEnum;
+import com.example.andreys.model.service.CategoryServiceModel;
 import com.example.andreys.repository.CategoryRepository;
 import com.example.andreys.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -33,5 +32,12 @@ public class CategoryServiceImpl implements CategoryService {
             }
 
         }
+    }
+
+    @Override
+    public Category findByCategoryName(CategoryNameEnum categoryNameEnum) {
+
+        return categoryRepository.findByName(categoryNameEnum)
+                .map(category -> modelMapper.map(category, Category.class)).orElse(null);
     }
 }
