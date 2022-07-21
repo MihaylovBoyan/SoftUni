@@ -2,10 +2,11 @@ package com.example.mobi.init;
 
 import com.example.mobi.model.entity.BrandEntity;
 import com.example.mobi.model.entity.ModelEntity;
-import com.example.mobi.model.entity.UserEntity;
 import com.example.mobi.model.entity.enums.CategoryEnum;
 import com.example.mobi.repository.BrandRepository;
 import com.example.mobi.repository.UserRepository;
+import com.example.mobi.service.OfferService;
+import com.example.mobi.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,39 +19,25 @@ public class DBInit implements CommandLineRunner {
     private final BrandRepository brandRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final OfferService offerService;
 
-    public DBInit(BrandRepository brandRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DBInit(BrandRepository brandRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, UserService userService, OfferService offerService) {
         this.brandRepository = brandRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+        this.offerService = offerService;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
             initializeBrandAndModels();
-            initializeUsers();
-
-
-
+            userService.initializeUsersAndRoles();
+            offerService.initializeOffers();
         }
 
-    private void initializeUsers() {
-
-        if(userRepository.count() == 0) {
-            UserEntity admin = new UserEntity();
-            admin
-                    .setActive(true)
-                    .setUsername("admin")
-                    .setFirstName("Admin")
-                    .setLastName("admonov")
-                    .setPassword(passwordEncoder.encode("test"));
-
-            userRepository.save(admin);
-
-        }
-
-    }
 
     public void initializeBrandAndModels(){
         if (brandRepository.count() == 0) {

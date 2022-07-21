@@ -4,6 +4,8 @@ import com.example.mobi.model.binding.UserLoginBindingModel;
 import com.example.mobi.model.service.UserLoginServiceModel;
 import com.example.mobi.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +17,11 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UserLoginController {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(UserLoginController.class);
+
     private final UserService userService;
     private final ModelMapper modelMapper;
+
 
     public UserLoginController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
@@ -34,8 +39,16 @@ public class UserLoginController {
 
         boolean loginSuccess = userService.login(modelMapper.map(userLoginBindingModel, UserLoginServiceModel.class));
 
-        return "redirect:/";
+        if(loginSuccess){
+
+
+
+            return "redirect:/";
+        }
+
+        return "redirect:/users/login";
     }
+
 
 
 }
