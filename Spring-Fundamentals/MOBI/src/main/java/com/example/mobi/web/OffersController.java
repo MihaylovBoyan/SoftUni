@@ -4,6 +4,7 @@ import com.example.mobi.service.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class OffersController {
@@ -20,6 +21,14 @@ public class OffersController {
         model.addAttribute("offers", offerService.getAllOffers());
 
         return "offers";
+    }
+
+
+    @GetMapping("/offers/{id}/details")
+    public String showOffer(@PathVariable Long id){
+
+
+        return "details";
     }
 
 }

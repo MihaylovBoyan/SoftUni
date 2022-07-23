@@ -1,16 +1,12 @@
-package com.example.mobi.view;
+package com.example.mobi.model.view;
 
 import com.example.mobi.model.entity.ModelEntity;
 import com.example.mobi.model.entity.enums.EngineEnum;
 import com.example.mobi.model.entity.enums.TransmissionEnum;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-
 public class OfferSummaryView {
 
+    private Long id;
     private String description;
     private EngineEnum engine;
     private String imageUrl;
@@ -18,7 +14,7 @@ public class OfferSummaryView {
     private int price;
     private TransmissionEnum transmission;
     private int year;
-    private ModelEntity model;
+    private String model;
 
 
     public String getDescription() {
@@ -84,12 +80,21 @@ public class OfferSummaryView {
         return this;
     }
 
-    public ModelEntity getModel() {
+    public String getModel() {
         return model;
     }
 
-    public OfferSummaryView setModel(ModelEntity model) {
+    public OfferSummaryView setModel(String model) {
         this.model = model;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public OfferSummaryView setId(Long id) {
+        this.id = id;
         return this;
     }
 }

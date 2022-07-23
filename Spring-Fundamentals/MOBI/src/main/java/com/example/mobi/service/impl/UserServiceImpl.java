@@ -4,6 +4,7 @@ import com.example.mobi.model.entity.UserEntity;
 import com.example.mobi.model.entity.UserRoleEntity;
 import com.example.mobi.model.entity.enums.UserRoleEnum;
 import com.example.mobi.model.service.UserLoginServiceModel;
+import com.example.mobi.model.service.UserRegisterServiceModel;
 import com.example.mobi.repository.UserRepository;
 import com.example.mobi.repository.UserRoleRepository;
 import com.example.mobi.service.UserService;
@@ -46,14 +47,8 @@ public class UserServiceImpl implements UserService {
 
             if (success) {
                 UserEntity loggedIn = userEntityOpt.get();
-                currentUser.setLoggedIn(true)
-                        .setUsername(loggedIn.getUsername())
-                        .setFirstName(loggedIn.getFirstName())
-                        .setLastName(loggedIn.getLastName());
-
+                login(loggedIn);
                 loggedIn.getRoles().forEach(r -> currentUser.addRole(r.getRole()));
-
-
             }
             return success;
         }
@@ -66,11 +61,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void initializeUsersAndRoles() {
-
         initializeRoles();
-
         initializeUsers();
-        }
+    }
+
+    @Override
+    public void registerAndLoginUser(UserRegisterServiceModel userRegisterServiceModel) {
+
+        UserRoleEntity userRole = userRoleRepository.findByRole(UserRoleEnum.USER);
+        UserEntity newUser = new UserEntity();
+
+        newUser
+                .setUsername(userRegisterServiceModel.getUsername())
+                .setFirstName(userRegisterServiceModel.getFirstName())
+                .setLastName(userRegisterServiceModel.getLastName())
+                .setActive(true)
+                .setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()))
+                .setRoles(Set.of(userRole));
+
+        userRepository.save(newUser);
+        login(newUser);
+    }
+
+    public boolean isUsernameFree(String username){
+        return userRepository.findByUsernameIgnoreCase(username).isEmpty();
+    }
+
+    private void login(UserEntity user) {
+
+        currentUser
+                .setLoggedIn(true)
+                .setUsername(user.getUsername())
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName());
+    }
 
     private void initializeUsers() {
 
@@ -103,9 +127,9 @@ public class UserServiceImpl implements UserService {
 
         }
 
-}
+    }
 
-    private void initializeRoles(){
+    private void initializeRoles() {
 
         if (userRoleRepository.count() == 0) {
             UserRoleEntity adminRole = new UserRoleEntity();

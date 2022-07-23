@@ -1,6 +1,6 @@
 package com.example.mobi.service;
 
-import com.example.mobi.view.OfferSummaryView;
+import com.example.mobi.model.view.OfferSummaryView;
 
 import java.util.List;
 
