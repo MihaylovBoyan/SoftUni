@@ -38,16 +38,6 @@ public class User extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false, unique = true)
-    public String getEmail() {
-        return email;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
     @Enumerated(EnumType.STRING)
     public levelEnum getLevel() {
         return level;
@@ -58,7 +48,7 @@ public class User extends BaseEntity{
         return this;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     public Set<Role> getRoles() {
         return roles;
     }
@@ -84,6 +74,15 @@ public class User extends BaseEntity{
 
     public User setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public User setEmail(String email) {
+        this.email = email;
         return this;
     }
 }
