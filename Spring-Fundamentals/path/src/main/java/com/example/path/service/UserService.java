@@ -12,4 +12,7 @@ public interface UserService {
 
     void logout();
 
+    UserServiceModel findById(Long id);
+
+    boolean usernameExists(String username);
 }

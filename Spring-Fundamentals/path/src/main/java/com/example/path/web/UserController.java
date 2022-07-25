@@ -4,6 +4,7 @@ import com.example.path.model.binding.UserLoginBindingModel;
 import com.example.path.model.binding.UserRegisterBindingModel;
 import com.example.path.model.service.UserRegisterServiceModel;
 import com.example.path.model.service.UserServiceModel;
+import com.example.path.model.view.UserViewModel;
 import com.example.path.security.CurrentUser;
 import com.example.path.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -34,6 +36,7 @@ public class UserController {
 
         if (!model.containsAttribute("userRegisterBindingModel")) {
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+            model.addAttribute("occupied", false);
         }
 
         return "register";
@@ -49,6 +52,13 @@ public class UserController {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
 
+            return "redirect:register";
+        }
+
+        boolean existsByUsername = userService.usernameExists(userRegisterBindingModel.getUsername());
+
+        if(existsByUsername){
+            redirectAttributes.addFlashAttribute("occupied", true);
             return "redirect:register";
         }
 
@@ -103,6 +113,16 @@ public class UserController {
         userService.logout();
 
         return "redirect:/";
+    }
+
+
+    @GetMapping("/profile/{id}")
+    public String profile(@PathVariable Long id, Model model){
+
+        model.addAttribute("user", modelMapper.map(userService.findById(id), UserViewModel.class));
+
+
+        return "profile";
     }
 
 //    @ModelAttribute()
