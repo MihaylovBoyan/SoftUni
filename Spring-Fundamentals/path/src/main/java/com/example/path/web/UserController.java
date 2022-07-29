@@ -36,7 +36,9 @@ public class UserController {
 
         if (!model.containsAttribute("userRegisterBindingModel")) {
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
-            model.addAttribute("occupied", false);
+            if (!model.containsAttribute("occupied")) {
+                model.addAttribute("occupied", false);
+            }
         }
 
         return "register";
@@ -57,7 +59,7 @@ public class UserController {
 
         boolean existsByUsername = userService.usernameExists(userRegisterBindingModel.getUsername());
 
-        if(existsByUsername){
+        if (existsByUsername) {
             redirectAttributes.addFlashAttribute("occupied", true);
             return "redirect:register";
         }
@@ -108,7 +110,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
 
         userService.logout();
 
@@ -117,7 +119,7 @@ public class UserController {
 
 
     @GetMapping("/profile/{id}")
-    public String profile(@PathVariable Long id, Model model){
+    public String profile(@PathVariable Long id, Model model) {
 
         model.addAttribute("user", modelMapper.map(userService.findById(id), UserViewModel.class));
 
