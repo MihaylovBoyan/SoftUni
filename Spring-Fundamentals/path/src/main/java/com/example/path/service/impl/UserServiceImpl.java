@@ -73,5 +73,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(username);
     }
 
+    @Override
+    public User findCurrentUserLoggedUser() {
+        return userRepository.findById(currentUser.getId()).orElse(null);
+    }
+
 
 }

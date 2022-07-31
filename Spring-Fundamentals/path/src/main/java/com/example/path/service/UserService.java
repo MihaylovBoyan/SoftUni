@@ -1,5 +1,6 @@
 package com.example.path.service;
 
+import com.example.path.model.entity.User;
 import com.example.path.model.service.UserRegisterServiceModel;
 import com.example.path.model.service.UserServiceModel;
 
@@ -15,4 +16,7 @@ public interface UserService {
     UserServiceModel findById(Long id);
 
     boolean usernameExists(String username);
+
+    User findCurrentUserLoggedUser();
+
 }
