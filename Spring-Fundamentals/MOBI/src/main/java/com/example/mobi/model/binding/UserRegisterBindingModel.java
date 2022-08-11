@@ -1,9 +1,12 @@
 package com.example.mobi.model.binding;
 
-import javax.persistence.Column;
+import com.example.mobi.model.validator.MatchingPasswords;
+import com.example.mobi.model.validator.UniqueUsername;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@MatchingPasswords(message = "passwords do not match")
 public class UserRegisterBindingModel {
 
     @NotNull
@@ -13,9 +16,12 @@ public class UserRegisterBindingModel {
     @Size(min = 4, max = 20)
     private String lastName;
 
+    @UniqueUsername
     private String username;
 
     private String password;
+
+    private String confirmPassword;
 
     public String getFirstName() {
         return firstName;
@@ -50,6 +56,15 @@ public class UserRegisterBindingModel {
 
     public UserRegisterBindingModel setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public UserRegisterBindingModel setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
         return this;
     }
 }

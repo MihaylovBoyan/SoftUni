@@ -1,18 +1,26 @@
 package com.example.mobi.service.impl;
 
+import com.example.mobi.model.entity.ModelEntity;
 import com.example.mobi.model.entity.OfferEntity;
+import com.example.mobi.model.entity.UserEntity;
 import com.example.mobi.model.entity.enums.EngineEnum;
 import com.example.mobi.model.entity.enums.TransmissionEnum;
+import com.example.mobi.model.service.OfferAddServiceModel;
+import com.example.mobi.model.service.OfferUpdateServiceModel;
+import com.example.mobi.model.view.OfferDetailsView;
 import com.example.mobi.repository.ModelRepository;
 import com.example.mobi.repository.OfferRepository;
 import com.example.mobi.repository.UserRepository;
 import com.example.mobi.service.OfferService;
 import com.example.mobi.user.CurrentUser;
 import com.example.mobi.model.view.OfferSummaryView;
+import com.example.mobi.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +85,55 @@ public class OfferServiceImpl implements OfferService {
                 .stream()
                 .map(this::map)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OfferDetailsView findById(Long id) {
+
+        OfferEntity offer = offerRepository.findById(id).orElse(null);
+
+        OfferDetailsView offerDetailsView = modelMapper.map(offer, OfferDetailsView.class);
+        offerDetailsView.setSeller(offer.getSeller());
+        offerDetailsView.setModel(offer.getModel());
+
+        return offerDetailsView;
+    }
+
+    @Override
+    public void deleteOffer(Long id) {
+
+        offerRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateOffer(OfferUpdateServiceModel offerModel) {
+        OfferEntity offerEntity = offerRepository.findById(offerModel.getId()).orElseThrow(() -> new ObjectNotFoundException("Offer with id " + offerModel.getId() + " Not Found"));
+
+        offerEntity.setPrice(offerModel.getPrice())
+                .setDescription(offerModel.getDescription())
+                .setEngine(offerModel.getEngine())
+                .setImageUrl(offerModel.getImageUrl())
+                .setMileage(offerModel.getMileage())
+                .setTransmission(offerModel.getTransmission())
+                .setYear(offerModel.getYear())
+                .setModified(Instant.now());
+
+        offerRepository.save(offerEntity);
+    }
+
+    @Override
+    public void saveOffer(OfferAddServiceModel offerAddServiceModel) {
+
+        OfferEntity offerEntity = modelMapper.map(offerAddServiceModel, OfferEntity.class);
+
+        ModelEntity modelEntity = modelRepository.findByName(offerAddServiceModel.getModel()).orElse(null);
+        UserEntity userEntity = userRepository.findByUsername(currentUser.getUsername()).orElse(null);
+        offerEntity.setModel(modelEntity);
+        offerEntity.setSeller(userEntity);
+
+        offerRepository.save(offerEntity);
+
+
     }
 
     private OfferSummaryView map(OfferEntity offer) {

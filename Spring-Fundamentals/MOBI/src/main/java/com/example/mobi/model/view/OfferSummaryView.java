@@ -16,7 +16,6 @@ public class OfferSummaryView {
     private int year;
     private String model;
 
-
     public String getDescription() {
         return description;
     }

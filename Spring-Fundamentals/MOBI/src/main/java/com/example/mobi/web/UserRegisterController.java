@@ -26,13 +26,12 @@ public class UserRegisterController {
     }
 
     @ModelAttribute(name = "userModel")
-    public UserRegisterBindingModel userModel(){
+    public UserRegisterBindingModel userModel() {
         return new UserRegisterBindingModel();
     }
 
     @GetMapping("/users/register")
     public String register(Model model) {
-
 
 
         return "auth-register";
@@ -48,14 +47,7 @@ public class UserRegisterController {
             return "redirect:/users/register";
         }
 
-        if (!userService.isUsernameFree(userModel.getUsername())) {
-            redirectAttributes.addFlashAttribute("userModel", userModel);
-            redirectAttributes.addFlashAttribute("usernameOccupied", true);
-            return "redirect:/users/register";
-        } else {
-            userService.registerAndLoginUser(modelMapper.map(userModel, UserRegisterServiceModel.class));
-        }
-
+        userService.registerAndLoginUser(modelMapper.map(userModel, UserRegisterServiceModel.class));
 
         return "redirect:/";
     }
