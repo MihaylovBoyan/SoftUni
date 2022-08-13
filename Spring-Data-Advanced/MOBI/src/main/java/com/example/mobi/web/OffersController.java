@@ -10,7 +10,9 @@ import com.example.mobi.model.view.OfferDetailsView;
 import com.example.mobi.service.BrandService;
 import com.example.mobi.service.ModelService;
 import com.example.mobi.service.OfferService;
+import com.example.mobi.service.impl.MobileleUser;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class OffersController {
@@ -111,7 +114,8 @@ public class OffersController {
     }
 
     @PostMapping("/offers/add")
-    public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addOfferConfirm(@Valid OfferAddBindingModel offerAddBindingModel, BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes, @AuthenticationPrincipal MobileleUser user) {
 
         if (bindingResult.hasErrors()) {
 
@@ -121,7 +125,7 @@ public class OffersController {
             return "redirect:/offers/add";
         }
 
-        offerService.saveOffer(modelMapper.map(offerAddBindingModel, OfferAddServiceModel.class));
+        offerService.saveOffer(modelMapper.map(offerAddBindingModel, OfferAddServiceModel.class), user.getUserIdentifier());
 
         return "redirect:/offers/all";
     }

@@ -1,5 +1,6 @@
 package com.example.mobi.config;
 
+import com.example.mobi.model.entity.enums.UserRoleEnum;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,6 +29,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // The next line allows access to the home, login and registration pages for everyone.
                 .antMatchers("/", "/users/login", "/users/register").permitAll()
+                // We permit the page below only for admin users.
+                .antMatchers("/statistics").hasRole(UserRoleEnum.ADMIN.name())
                 // Next we forbid all other pages for unauthenticated users.
                 .antMatchers("/**").authenticated()
                 // Configure login with login HTML form with two input files.

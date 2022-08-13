@@ -15,8 +15,10 @@ import com.example.mobi.service.OfferService;
 import com.example.mobi.model.view.OfferSummaryView;
 import com.example.mobi.web.exception.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -118,14 +120,13 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void saveOffer(OfferAddServiceModel offerAddServiceModel) {
+    public void saveOffer(OfferAddServiceModel offerAddServiceModel, String ownerId) {
 
         OfferEntity offerEntity = modelMapper.map(offerAddServiceModel, OfferEntity.class);
-
         ModelEntity modelEntity = modelRepository.findByName(offerAddServiceModel.getModel()).orElse(null);
-      //todo  UserEntity userEntity = userRepository.findByUsername(currentUser.getUsername()).orElse(null);
         offerEntity.setModel(modelEntity);
-      //  offerEntity.setSeller(userEntity);
+        offerEntity.setSeller(userRepository.findByUsername(ownerId).orElseThrow());
+
 
         offerRepository.save(offerEntity);
 
