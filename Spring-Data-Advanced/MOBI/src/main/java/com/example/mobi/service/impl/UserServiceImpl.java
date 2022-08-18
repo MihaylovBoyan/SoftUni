@@ -8,6 +8,10 @@ import com.example.mobi.repository.UserRepository;
 import com.example.mobi.repository.UserRoleRepository;
 import com.example.mobi.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -20,12 +24,14 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    private final MobileleUserServiceImpl mobileleUserService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository, MobileleUserServiceImpl mobileleUserService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
+        this.mobileleUserService = mobileleUserService;
     }
 
     @Override
@@ -48,8 +54,20 @@ public class UserServiceImpl implements UserService {
                 .setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()))
                 .setRoles(Set.of(userRole));
 
-        userRepository.save(newUser);
-       // login(newUser);
+        newUser = userRepository.save(newUser);
+
+
+        UserDetails principal = mobileleUserService.loadUserByUsername(newUser.getUsername());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                principal,
+                newUser.getPassword(),
+                principal.getAuthorities()
+        );
+
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(authentication);
+
     }
 
     public boolean isUsernameFree(String username){
