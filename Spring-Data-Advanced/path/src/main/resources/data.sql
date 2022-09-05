@@ -10,17 +10,17 @@ VALUES (3, 'USER');
 
 -- some test users
 INSERT INTO users (id, age, full_name, level, password, username)
-VALUES (1, 28, 'Admin Adminov', 'ADVANCED', '12345', 'admin');
+VALUES (1, 28, 'Admin Adminov', 'ADVANCED', 'df171f2f49dda12b5a6cb9429ba4a900fcda1aa77669c0f6800a1a79d2689e0cc626360c41f0b39f', 'admin');
 
 INSERT INTO users (id, age, full_name, level, password, username)
-VALUES (2, 29, 'Moderator Moderatorov', 'INTERMEDIATE', '12345',
+VALUES (2, 29, 'Moderator Moderatorov', 'INTERMEDIATE', 'df171f2f49dda12b5a6cb9429ba4a900fcda1aa77669c0f6800a1a79d2689e0cc626360c41f0b39f',
         'moderator');
 
 INSERT INTO users (id, age, full_name, level, password, username)
-VALUES (3, 30, 'User Userov', 'BEGINNER', '12345', 'user');
+VALUES (3, 30, 'User Userov', 'BEGINNER', 'df171f2f49dda12b5a6cb9429ba4a900fcda1aa77669c0f6800a1a79d2689e0cc626360c41f0b39f', 'user');
 
 INSERT INTO users (id, age, full_name, level, password, username)
-VALUES (4, 33, 'Ivan Ivanov', 'BEGINNER', '12345', 'ivan');
+VALUES (4, 33, 'Ivan Ivanov', 'BEGINNER', 'df171f2f49dda12b5a6cb9429ba4a900fcda1aa77669c0f6800a1a79d2689e0cc626360c41f0b39f', 'ivan');
 -- user roles
 -- admin
 INSERT INTO users_roles (`user_id`, `roles_id`)

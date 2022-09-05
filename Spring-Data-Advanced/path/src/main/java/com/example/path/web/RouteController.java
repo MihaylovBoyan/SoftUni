@@ -2,7 +2,6 @@ package com.example.path.web;
 
 import com.example.path.model.binding.RouteAddBindingModel;
 import com.example.path.model.service.RouteServiceModel;
-import com.example.path.security.CurrentUser;
 import com.example.path.service.RouteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -20,12 +19,10 @@ public class RouteController {
 
     private final RouteService routeService;
     private final ModelMapper modelMapper;
-    private final CurrentUser currentUser;
 
-    public RouteController(RouteService routeService, ModelMapper modelMapper, CurrentUser currentUser) {
+    public RouteController(RouteService routeService, ModelMapper modelMapper) {
         this.routeService = routeService;
         this.modelMapper = modelMapper;
-        this.currentUser = currentUser;
     }
 
     @GetMapping("/all")
