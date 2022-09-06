@@ -20,6 +20,7 @@ public class Route extends BaseEntity{
     private String videoUrl;
     private Set<Picture> pictures;
     private Set<Category> categories;
+    private List<Comment> comments;
 
     @Column(columnDefinition = "LONGTEXT")
     public String getGpxCoordinates() {
@@ -89,13 +90,23 @@ public class Route extends BaseEntity{
         return this;
     }
 
-    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "route")
     public Set<Picture> getPictures() {
         return pictures;
     }
 
     public Route setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Route setComments(List<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 }

@@ -8,7 +8,7 @@
     <header th:replace="~{fragments/commons::nav}">
     </header>
 
-    <input type="hidden" name="routeId" id="routeId">
+    <input type="hidden" name="routeId" id="routeId" th:value="${route.id}">
     <div class="details-main" th:object="${route}">
         <section class="route-info text-center">
             <h4 id="track-name" th:text="*{name}"></h4>
