@@ -11,6 +11,7 @@ import com.example.path.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class RouteServiceImpl implements RouteService {
         this.categoryService = categoryService;
     }
 
-
+    @Transactional
     @Override
     public List<RouteViewModel> findAllRoutesView() {
 
@@ -51,13 +52,14 @@ public class RouteServiceImpl implements RouteService {
         route.setCategories(routeServiceModel.getCategories().
                 stream()
                 .map(categoryService::findByName)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         routeRepository.save(route);
 
 
     }
 
+    @Transactional
     @Override
     public RouteDetailsViewModel findRouteById(Long id) {
 

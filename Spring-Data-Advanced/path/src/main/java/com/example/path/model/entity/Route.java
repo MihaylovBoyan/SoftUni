@@ -18,8 +18,8 @@ public class Route extends BaseEntity{
     private String name;
     private User author;
     private String videoUrl;
-    private Set<Picture> pictures;
-    private Set<Category> categories;
+    private List<Picture> pictures;
+    private List<Category> categories;
     private List<Comment> comments;
 
     @Column(columnDefinition = "LONGTEXT")
@@ -80,27 +80,27 @@ public class Route extends BaseEntity{
         return this;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    public Set<Category> getCategories() {
+    @ManyToMany()
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public Route setCategories(Set<Category> categories) {
+    public Route setCategories(List<Category> categories) {
         this.categories = categories;
         return this;
     }
 
     @OneToMany(mappedBy = "route")
-    public Set<Picture> getPictures() {
+    public List<Picture> getPictures() {
         return pictures;
     }
 
-    public Route setPictures(Set<Picture> pictures) {
+    public Route setPictures(List<Picture> pictures) {
         this.pictures = pictures;
         return this;
     }
 
-    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "route")
     public List<Comment> getComments() {
         return comments;
     }

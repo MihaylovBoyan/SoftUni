@@ -2,12 +2,18 @@ package com.example.path.service.impl;
 
 import com.example.path.model.entity.Comment;
 import com.example.path.model.entity.Route;
+import com.example.path.model.service.CommentServiceModel;
 import com.example.path.model.view.CommentViewModel;
 import com.example.path.repository.CommentRepository;
 import com.example.path.repository.RouteRepository;
+import com.example.path.repository.UserRepository;
 import com.example.path.service.CommentService;
 import com.example.path.service.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,26 +23,40 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final RouteRepository routeRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, RouteRepository routeRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, RouteRepository routeRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
         this.routeRepository = routeRepository;
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public void addComment() {
+    public CommentViewModel createComment(CommentServiceModel commentServiceModel) {
 
+        Comment comment = new Comment();
+        comment
+                .setCreated(LocalDateTime.now())
+                .setRoute(routeRepository.findById(commentServiceModel.getRouteId()).orElseThrow())
+                .setTextContent(commentServiceModel.getMessage())
+                .setAuthor(userRepository.findByUsername(commentServiceModel.getCreator()).orElseThrow());
+
+        commentRepository.save(comment);
+
+        return modelMapper.map(comment, CommentViewModel.class);
     }
 
+    @Transactional
     @Override
     public List<CommentViewModel> getComments(Long id) {
 
         Optional<Route> routeOpt = routeRepository.findById(id);
 
-        if(routeOpt.isEmpty()){
+        if (routeOpt.isEmpty()) {
             throw new ObjectNotFoundException("Root with id" + id + "was not found");
         }
-
 
 
         return routeOpt.get().getComments().stream().map(this::map).collect(Collectors.toList());
@@ -46,9 +66,9 @@ public class CommentServiceImpl implements CommentService {
 
         CommentViewModel commentViewModel = new CommentViewModel();
         commentViewModel.setCommentId(comment.getId());
-        commentViewModel.setAuthor(comment.getAuthor().getUsername());
+        commentViewModel.setUser(comment.getAuthor().getUsername());
         commentViewModel.setCreated(comment.getCreated());
-        commentViewModel.setTextContent(comment.getTextContent());
+        commentViewModel.setMessage(comment.getTextContent());
         commentViewModel.setCanDelete(true);
         commentViewModel.setCanDelete(true);
 

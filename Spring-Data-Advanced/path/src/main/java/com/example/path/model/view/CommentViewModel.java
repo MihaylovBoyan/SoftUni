@@ -1,15 +1,12 @@
 package com.example.path.model.view;
 
-import com.example.path.model.entity.Route;
-import com.example.path.model.entity.User;
-
 import java.time.LocalDateTime;
 
 public class CommentViewModel {
 
     private Long commentId;
-    private String textContent;
-    private String author;
+    private String message;
+    private String user;
     private LocalDateTime created;
     private boolean canApprove;
     private boolean canDelete;
@@ -23,21 +20,21 @@ public class CommentViewModel {
         return this;
     }
 
-    public String getTextContent() {
-        return textContent;
+    public String getMessage() {
+        return message;
     }
 
-    public CommentViewModel setTextContent(String textContent) {
-        this.textContent = textContent;
+    public CommentViewModel setMessage(String message) {
+        this.message = message;
         return this;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUser() {
+        return user;
     }
 
-    public CommentViewModel setAuthor(String author) {
-        this.author = author;
+    public CommentViewModel setUser(String user) {
+        this.user = user;
         return this;
     }
 
