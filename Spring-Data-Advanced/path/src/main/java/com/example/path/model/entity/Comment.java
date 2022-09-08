@@ -1,9 +1,6 @@
 package com.example.path.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -27,7 +24,7 @@ public class Comment extends BaseEntity{
         return this;
     }
 
-    @Column(columnDefinition = "TEXT")
+    @Lob
     public String getTextContent() {
         return textContent;
     }

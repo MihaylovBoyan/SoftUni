@@ -17,13 +17,9 @@ import java.util.stream.Collectors;
 public class PathfinderUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
-
-    public PathfinderUserDetailsService(UserRepository userRepository, ModelMapper modelMapper) {
+    public PathfinderUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-
     }
 
     @Override

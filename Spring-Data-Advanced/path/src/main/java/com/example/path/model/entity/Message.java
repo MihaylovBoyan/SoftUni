@@ -25,7 +25,7 @@ public class Message extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     public String getTextContext() {
         return textContext;
     }

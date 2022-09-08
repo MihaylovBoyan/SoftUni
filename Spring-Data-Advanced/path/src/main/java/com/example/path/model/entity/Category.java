@@ -2,10 +2,7 @@ package com.example.path.model.entity;
 
 import com.example.path.model.entity.enums.CategoryNameEnum;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -16,7 +13,7 @@ public class Category extends BaseEntity{
     private String description;
     private CategoryNameEnum name;
 
-    @Column(columnDefinition = "TEXT")
+    @Lob
     public String getDescription() {
         return description;
     }

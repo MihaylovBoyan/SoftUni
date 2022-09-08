@@ -22,7 +22,7 @@ public class Route extends BaseEntity{
     private List<Category> categories;
     private List<Comment> comments;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     public String getGpxCoordinates() {
         return gpxCoordinates;
     }
@@ -70,7 +70,7 @@ public class Route extends BaseEntity{
         this.videoUrl = videoUrl;
         return this;
     }
-    @Column(columnDefinition = "TEXT")
+    @Lob
     public String getDescription() {
         return description;
     }
@@ -100,7 +100,7 @@ public class Route extends BaseEntity{
         return this;
     }
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     public List<Comment> getComments() {
         return comments;
     }
