@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,17 +37,34 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentViewModel createComment(CommentServiceModel commentServiceModel) {
 
+      //  Objects.requireNonNull(commentServiceModel.getCreator());
+
         Comment comment = new Comment();
         comment
                 .setCreated(LocalDateTime.now())
-                .setRoute(routeRepository.findById(commentServiceModel.getRouteId()).orElseThrow())
+                .setApproved(false)
+                .setRoute(routeRepository.findById(commentServiceModel.getRouteId()).orElseThrow(() -> new ObjectNotFoundException("Route with id does not exists")))
                 .setTextContent(commentServiceModel.getMessage())
-                .setAuthor(userRepository.findByUsername(commentServiceModel.getCreator()).orElseThrow());
+                .setAuthor(userRepository.findByEmail(commentServiceModel.getCreator()).orElseThrow());
 
         commentRepository.save(comment);
 
-        return modelMapper.map(comment, CommentViewModel.class);
+        return map(comment);
     }
+
+//    private CommentViewModel mapAsComment(Comment comment) {
+//
+//
+//        new CommentViewModel()
+//                .setCommentId(comment.getId())
+//                .setMessage(comment.getTextContent())
+//                .setUser(comment.getAuthor().getUsername())
+//                .setCreated(comment.getCreated())
+//                .setCanDelete(false)
+//                .setCanApprove(false);
+//
+//
+//    }
 
     @Transactional
     @Override
