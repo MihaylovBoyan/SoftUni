@@ -8,7 +8,7 @@ import java.util.List;
 public class ApiError {
 
     private final HttpStatus status;
-    private List<String> fieldsWithErrors = new ArrayList<>();
+    private List<String> fieldWithErrors = new ArrayList<>();
 
     public ApiError(HttpStatus status) {
         this.status = status;
@@ -19,15 +19,15 @@ public class ApiError {
     }
 
     public void addFieldWithError(String error){
-        fieldsWithErrors.add(error);
+        fieldWithErrors.add(error);
     }
 
-    public List<String> getFieldsWithErrors() {
-        return fieldsWithErrors;
+    public List<String> getFieldWithErrors() {
+        return fieldWithErrors;
     }
 
-    public ApiError setFieldsWithErrors(List<String> fieldsWithErrors) {
-        this.fieldsWithErrors = fieldsWithErrors;
+    public ApiError setFieldsWithErrors(List<String> fieldWithErrors) {
+        this.fieldWithErrors = fieldWithErrors;
         return this;
     }
 }
