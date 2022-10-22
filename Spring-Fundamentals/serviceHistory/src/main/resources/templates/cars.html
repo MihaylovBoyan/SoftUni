@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid">
+  <h2 class="text-center text-white mt-5">All Cars</h2>
+  <div class="offers row mx-auto d-flex flex-row justify-content-center">
+    <div th:each="c : ${cars}" th:object="${c}" class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
+      <div class="card-img-top-wrapper">
+        <img class="card-img-top" th:src="*{imageUrl}" alt="Car image">
+      </div>
+      <div class="card-body pb-1">
+        <h5 class="card-title">
+          Characteristics</h5>
+      </div>
+      <ul class="offer-details list-group list-group-flush">
+        <li  class="list-group-item">
+          <div class="card-text"><span th:text="|Brand - *{brand}|">Brand</span></div>
+          <div class="card-text"><span th:text="|Model - *{model}|">Model</span></div>
+          <div class="card-text"><span th:text="|Year - *{year}|">Year</span></div>
+          <div class="card-text"><span th:text="|Plate number - *{plateNumber}|">Plate number</span></div>
+        </li>
+      </ul>
+      <div class="card-body">
+        <a class="card-link" th:href="@{/cars/{id}/details(id=*{id})}">Details</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <footer> </footer>
+</div>
+
+</body>
+</html>
