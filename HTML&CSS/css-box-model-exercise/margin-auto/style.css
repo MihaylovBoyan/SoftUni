@@ -1,0 +1,33 @@
+*{
+    box-sizing: border-box;
+}
+
+.container{
+    border: 2px solid red;
+    padding: 5px;
+    font-size: 0px;
+}
+
+.container > *{
+    font-size: 16px;
+}
+
+.text{
+    display: inline-block;
+    padding: 5px;
+    border-radius: 6px;
+    background-color: lightgreen;
+    /* width: 200px; */
+    vertical-align: top;
+}
+
+.first{
+    width: 80%;
+    height: 300px;
+}
+
+.second{
+    margin-left: 2%;
+    width: 18%;
+    vertical-align: top;
+}
