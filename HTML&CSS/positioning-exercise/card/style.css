@@ -1,0 +1,213 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.designer-card{
+    width: 400px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    color: white;
+}
+
+.designer-card::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.2;
+}
+
+.designer-card .img-bg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition: transform 300ms ease-in-out;
+}
+
+.designer-card .content{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 12px;
+}
+
+.designer-card .content .tag{
+    font-size: 14px;
+    color: orange;
+}
+
+.designer-card .content .title{
+    font-size: 18px;
+    margin-bottom: 12px;
+
+}
+
+.designer-card .content .meta-info{
+    display: grid;
+    grid-template-columns: 20px 2fr 3fr;
+    gap: 6px;
+}
+
+.designer-card .meta-info .writer{
+    /* width: 20px;
+    height: 20px; */
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.designer-card .meta-info .writer img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.designer-card:hover .img-bg{
+    transform: scale(1.5);
+}
+
+
+
+.card{
+    aspect-ratio: 1/1.5;
+    width: 300px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    color: white;
+    
+}
+
+.card .img-bg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card .content{
+    position: absolute;
+    bottom: -201px;
+    left: 0;
+    width: 100%;
+    padding: 12px;
+    transition: bottom 300ms linear;
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(2,0,36,0) 0%, rgba(2,0,36,1) 30%);
+}
+
+.card .content .meta{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.card .content .title{
+    font-size: 22px;
+    text-align: center;
+}
+
+.card .content .description{
+    height: 191px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.card:hover .content{
+    /* opacity: 0.5; */
+    bottom: 0px;
+}
+
+
+
+
+
+
+.simple-grid.simple-grid{
+    margin-top: 32px;
+    padding: 12px;
+    border: 1px dashed black;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 100px);
+    gap: 12px;
+}
+
+.simple-grid .item{
+    background-color: orange;
+    border-radius: 4px;
+    text-align: center;
+}
+
+#areas-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(6, 100px);
+    padding: 12px;
+    margin-top: 32px;
+    gap: 12px;
+    grid-template-areas: 
+    "small1 medium1 large"
+    "small1 medium1 large"
+    "small2 medium1 large"
+    "small2 medium2 large"
+    "small3 medium2 large"
+    "small3 medium2 large";
+
+}
+
+#areas-grid .item{
+    overflow: hidden;
+}
+
+#areas-grid .grid-article{
+    position: relative;
+    height: 100%;
+}
+
+#areas-grid .grid-article img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#areas-grid .grid-article h2{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+#areas-grid .item1{
+    grid-area: small1;
+}
+
+#areas-grid .item2{
+    grid-area: small2;
+}
+
+#areas-grid .item3{
+    grid-area: small3;
+}
+
+#areas-grid .item4{
+    grid-area: medium1;
+}
+
+#areas-grid .item5{
+    grid-area: medium2;
+}
+
+#areas-grid .item6{
+    grid-area: large;
+}
